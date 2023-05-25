@@ -1,7 +1,8 @@
 #include"include/warehouse.hpp"
 #include"include/shelf.hpp"
+#include"include/pallet.hpp"
 #include<iostream>
-
+#include<algorithm>
 
 Warehouse::Warehouse(){}
 
@@ -18,7 +19,7 @@ bool Warehouse::rearrangeShelf(Shelf& shelf){
     for (Employee& employee : Employees){
         if (employee.getBusy()==false && employee.getForkliftCertificate()==true){
             employee.setBusy(true);
-
+            
             }
     }
     //sorteer de pallets oplopen op volgorde van itemCount
@@ -26,7 +27,20 @@ bool Warehouse::rearrangeShelf(Shelf& shelf){
 }
 
 bool Warehouse::pickItems(std::string itemName, int itemCount){
-    //true wanneer itemCount van itemName aanwezig zijn verdeeld over alle pallets
-    //en dus ook alle shelves.
-
+    int remainingItems = itemCount;
+    for (Shelf& shelf : Shelves){
+        for (Pallet& pallet : shelf.pallets){
+            if (pallet.getItemName()== itemName){
+                while (remainingItems > 0 && pallet.isEmpty()==false){
+                    if(pallet.takeOne()){
+                        remainingItems-=1;
+                    }
+                }
+            }
+        if (remainingItems== 0 ){
+            return true;
+            }
+        }
+    }
+    return false;
 }
