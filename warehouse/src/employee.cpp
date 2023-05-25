@@ -3,7 +3,8 @@
 
 Employee::Employee(std::string name, bool forkliftCertificate):
     name(name),
-    forkliftCertificate(forkliftCertificate)
+    forkliftCertificate(forkliftCertificate),
+    busy(false)
 {}
 
 std::string Employee::getName(){
