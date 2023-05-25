@@ -15,15 +15,18 @@ void Warehouse::addShelf(Shelf shelf){
 }
 
 bool Warehouse::rearrangeShelf(Shelf& shelf){
-    //check if employee busy(false) and forkliftCertified(true)
     for (Employee& employee : Employees){
         if (employee.getBusy()==false && employee.getForkliftCertificate()==true){
-            employee.setBusy(true);
-            
+            //employee.setBusy(true);
+            for(int i =0; i<shelf.pallets.size()-1; i+=1){
+                if(shelf.pallets[i].getItemCount()>shelf.pallets[i+1].getItemCount()){
+                    shelf.swapPallet(i, i+1);
+                }
             }
+        }
+        return true;
     }
-    //sorteer de pallets oplopen op volgorde van itemCount
-    //swapPallet om pallets te verwisselen
+    return false;
 }
 
 bool Warehouse::pickItems(std::string itemName, int itemCount){
