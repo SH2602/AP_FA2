@@ -23,10 +23,9 @@ int Pallet::getItemCount(){
 
 int Pallet::getRemainingSpace(){
     int remainingSpace = itemCapacity - itemCount;
-    if(remainingSpace>0 && remainingSpace< itemCapacity){
+    if(remainingSpace>0 && remainingSpace< itemCapacity){   // checks if remaining space is valid
         return remainingSpace;
     }
-    std::cout<<"There is no space left on the pallet."<<std::endl;
     remainingSpace = 0;
     return remainingSpace;
 }
@@ -42,7 +41,7 @@ bool Pallet::reallocateEmptyPallet(std::string itemName, int itemCapacity){
 
 bool Pallet::takeOne(){
     if(!isEmpty()){
-        this->itemCount -=1;
+        this->itemCount -=1;    // takes 1 item from pallet
         return true;
     }
     return false;
@@ -50,7 +49,7 @@ bool Pallet::takeOne(){
 
 bool Pallet::putOne(){
     if(!isFull()){
-        this->itemCount += 1;
+        this->itemCount += 1;   // adds 1 item to pallet
         return true;
     }
     return false;

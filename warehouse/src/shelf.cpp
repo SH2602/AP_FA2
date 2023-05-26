@@ -11,7 +11,7 @@ bool Shelf::swapPallet(int slot, int slot2){
 
 bool Shelf::isEmpty(){
     for (Pallet pallet : pallets){
-        if (pallet.getItemCount()>0){
+        if (pallet.getItemCount()>0){   //if itemcount is positive, not empty
             return false;
         }
     }
@@ -20,7 +20,7 @@ bool Shelf::isEmpty(){
 
 bool Shelf::isFull(){
     for (Pallet pallet : pallets){
-        if(pallet.getRemainingSpace()==0){
+        if(pallet.getRemainingSpace()==0){  // no remaining space, is full.
             return true;
         }
     }
