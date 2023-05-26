@@ -21,26 +21,26 @@ int main(){
         Pallet("Books", 100, 20),
         Pallet("Books", 100, 55),
         Pallet(),
-        Pallet(),
-    }
+        Pallet()
+    };
 
     //one full shelf
-    Shelf shelf2 = shelf();
+    Shelf shelf2 = Shelf();
     shelf2.pallets = {
         Pallet("Books", 100, 20),
         Pallet("TV's", 100, 40),
         Pallet("Cups", 100, 55),
-        Pallet("Books", 100, 10),
-    }
+        Pallet("Books", 100, 10)
+    };
 
     //one empty shelf
-    Shelf shelf3 = shelf();
+    Shelf shelf3 = Shelf();
     shelf3.pallets = {
-        Pallet();
-        Pallet();
-        Pallet();
-        Pallet();
-    }
+        Pallet(),
+        Pallet(),
+        Pallet(),
+        Pallet()
+    };
 
 
     //add employees to the empty warehouse.
@@ -62,6 +62,5 @@ int main(){
     //pick items from books over multiple shelves.
     warehouse.pickItems("Books", 100);
     std::cout<<"picked 100 books from multiple shelves!"<<std::endl;
-    
     return 0;
 }
