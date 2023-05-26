@@ -35,20 +35,32 @@ bool Warehouse::rearrangeShelf(Shelf& shelf){
 }
 
 bool Warehouse::pickItems(std::string itemName, int itemCount){
-    int remainingItems = itemCount;
+    int itemAmount = 0;
     for (Shelf& shelf : Shelves){
-        for (Pallet& pallet : shelf.pallets){
-            if (pallet.getItemName()== itemName){
-                while (remainingItems > 0 && pallet.isEmpty()==false){
-                    if(pallet.takeOne()){
-                        remainingItems-=1;
-                    }
-                }
-            }
-        if (remainingItems== 0 ){
-            return true;
+        for(Pallet& pallet : shelf.pallets){
+            if (pallet.getItemName() == itemName){
+                itemAmount += pallet.getItemCount();
             }
         }
     }
+
+    if(itemAmount >= itemCount){
+        int remainingItems = itemCount;
+        for (Shelf& shelf : Shelves){
+            for (Pallet& pallet : shelf.pallets){
+                if (pallet.getItemName()== itemName){
+                    while (remainingItems > 0 && pallet.isEmpty()==false){
+                        if(pallet.takeOne()){
+                            remainingItems-=1;
+                        }
+                    }
+                }
+            if (remainingItems== 0 ){
+                return true;
+                }
+            }
+        }
+    
     return false;
+    }
 }
