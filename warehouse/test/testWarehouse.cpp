@@ -235,3 +235,143 @@ TEST_CASE("Rearrange shelf with quallified, but busy, employee", "Warehouse::rea
     REQUIRE(warehouse.Shelves[0].pallets[2].getItemCount() == 30);
     REQUIRE(warehouse.Shelves[0].pallets[3].getItemCount() == 10);
 }
+
+
+
+
+///////////////////////////////////////////////////////////////
+//           Warehouse::pickItems test cases                 //
+///////////////////////////////////////////////////////////////
+
+TEST_CASE("Pick items from empty shelf", "Warehouse::pickItems"){
+    // Construct empty warehouse.
+    Warehouse warehouse = Warehouse();
+    warehouse.addShelf(Shelf());
+
+    //pick items from the first and only shelf of wareouse.
+    bool successful = warehouse.pickItems("Books", 20);
+    //should fail
+    REQUIRE(!successful);
+}   
+
+TEST_CASE("Pick items from shelf with more than required itemCount", "Warehouse::pickItems"){
+    // Construct warehouse with filled shelves.
+    Warehouse warehouse = Warehouse();
+    Shelf shelf1 = Shelf();
+    shelf1.pallets = {
+        Pallet("Books", 100, 20), 
+        Pallet("Cups", 100, 40), 
+        Pallet("Tv's", 100, 30), 
+        Pallet("Books", 100, 10)
+    };
+
+    warehouse.addShelf(shelf1);
+
+    // Check if correct items get picked from correct pallet.
+    bool successful = warehouse.pickItems("Tv's", 15);
+    REQUIRE(successful);
+
+    // Check if itemcount is updated on correct pallet
+    REQUIRE(warehouse.Shelves[0].pallets[0].getItemCount() == 20);
+    REQUIRE(warehouse.Shelves[0].pallets[1].getItemCount() == 40);
+    REQUIRE(warehouse.Shelves[0].pallets[2].getItemCount() == 15);
+    REQUIRE(warehouse.Shelves[0].pallets[3].getItemCount() == 10);
+}
+
+TEST_CASE("Pick items from shelf with the exact required itemCount", "Warehouse::pickItems"){
+    // Construct warehouse with filled shelves.
+    Warehouse warehouse = Warehouse();
+    Shelf shelf1 = Shelf();
+    shelf1.pallets = {
+        Pallet("Books", 100, 20), 
+        Pallet("Cups", 100, 40), 
+        Pallet("Tv's", 100, 30), 
+        Pallet("Books", 100, 10)
+    };
+
+    warehouse.addShelf(shelf1);
+
+    // Check if correct items get picked from correct pallet.
+    bool successful = warehouse.pickItems("Books", 20);
+    REQUIRE(successful);
+
+    // Check if itemcount is updated on correct pallet
+    REQUIRE(warehouse.Shelves[0].pallets[0].getItemCount() == 0);
+    REQUIRE(warehouse.Shelves[0].pallets[1].getItemCount() == 40);
+    REQUIRE(warehouse.Shelves[0].pallets[2].getItemCount() == 30);
+    REQUIRE(warehouse.Shelves[0].pallets[3].getItemCount() == 10);
+}
+
+TEST_CASE("Pick items from shelf with less than required itemCount", "Warehouse::pickItems"){
+    // Construct warehouse with filled shelves.
+    Warehouse warehouse = Warehouse();
+    Shelf shelf1 = Shelf();
+    shelf1.pallets = {
+        Pallet("Books", 100, 20), 
+        Pallet("Cups", 100, 40), 
+        Pallet("Tv's", 100, 30), 
+        Pallet("Books", 100, 10)
+    };
+
+    warehouse.addShelf(shelf1);
+
+    // Check if correct items get picked from correct pallet.
+    bool successful = warehouse.pickItems("Cups", 55);
+    // Should fail
+    REQUIRE(!successful);
+
+    // Check if itemcount remained the same on pallets
+    REQUIRE(warehouse.Shelves[0].pallets[0].getItemCount() == 20);
+    REQUIRE(warehouse.Shelves[0].pallets[1].getItemCount() == 40);
+    REQUIRE(warehouse.Shelves[0].pallets[2].getItemCount() == 30);
+    REQUIRE(warehouse.Shelves[0].pallets[3].getItemCount() == 10);
+}
+
+TEST_CASE("Pick items from shelf over multiple pallets to reach required itemCount", "Warehouse::pickItems"){
+    // Construct warehouse with filled shelves.
+    Warehouse warehouse = Warehouse();
+    Shelf shelf1 = Shelf();
+    shelf1.pallets = {
+        Pallet("Books", 100, 20), 
+        Pallet("Books", 100, 40), 
+        Pallet("Tv's", 100, 30), 
+        Pallet("Books", 100, 10)
+    };
+
+    warehouse.addShelf(shelf1);
+
+    // Check if correct items get picked.
+    bool successful = warehouse.pickItems("Books", 50);
+    REQUIRE(successful);
+
+    // Check if itemcount is updated on correct pallet
+    REQUIRE(warehouse.Shelves[0].pallets[0].getItemCount() == 0);
+    REQUIRE(warehouse.Shelves[0].pallets[1].getItemCount() == 10);
+    REQUIRE(warehouse.Shelves[0].pallets[2].getItemCount() == 30);
+    REQUIRE(warehouse.Shelves[0].pallets[3].getItemCount() == 10);
+}
+
+TEST_CASE("Pick items from shelf without required itemName", "Warehouse::pickItems"){
+    // Construct warehouse with filled shelves.
+    Warehouse warehouse = Warehouse();
+    Shelf shelf1 = Shelf();
+    shelf1.pallets = {
+        Pallet("Books", 100, 20), 
+        Pallet("Cups", 100, 40), 
+        Pallet("Tv's", 100, 30), 
+        Pallet("Books", 100, 10)
+    };
+
+    warehouse.addShelf(shelf1);
+
+    // Check if items get picked from correct pallet.
+    bool successful = warehouse.pickItems("Chairs", 20);
+    // Should fail
+    REQUIRE(!successful);
+
+    // Check if itemcount remained the same on pallets.
+    REQUIRE(warehouse.Shelves[0].pallets[0].getItemCount() == 20);
+    REQUIRE(warehouse.Shelves[0].pallets[1].getItemCount() == 40);
+    REQUIRE(warehouse.Shelves[0].pallets[2].getItemCount() == 30);
+    REQUIRE(warehouse.Shelves[0].pallets[3].getItemCount() == 10);
+}
