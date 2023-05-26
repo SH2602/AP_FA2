@@ -2,8 +2,8 @@
 
 #include<iostream>
 #include<array>
-#include "include/pallet.hpp"
-#include"include/icontainer.hpp"
+#include"pallet.hpp"
+#include"icontainer.hpp"
 
 class Shelf:public IContainer{
     public:

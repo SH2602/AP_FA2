@@ -3,8 +3,8 @@
 #include<iostream>
 #include<vector>
 
-#include"include/employee.hpp"
-#include"include/shelf.hpp"
+#include"employee.hpp"
+#include"shelf.hpp"
 
 
 class Warehouse{
