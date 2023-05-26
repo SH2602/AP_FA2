@@ -17,7 +17,6 @@ void Warehouse::addShelf(Shelf shelf){
 bool Warehouse::rearrangeShelf(Shelf& shelf){
     for (Employee& employee : Employees){
         if (employee.getBusy()==false && employee.getForkliftCertificate()==true){
-            //employee.setBusy(true);
             for(int i =0; i<shelf.pallets.size()-1; ++i){
                 for (int j = 0;  j< shelf.pallets.size()-i-1; ++j){
                     Pallet& pallet1 = shelf.pallets[j];
