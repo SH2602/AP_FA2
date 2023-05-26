@@ -18,13 +18,18 @@ bool Warehouse::rearrangeShelf(Shelf& shelf){
     for (Employee& employee : Employees){
         if (employee.getBusy()==false && employee.getForkliftCertificate()==true){
             //employee.setBusy(true);
-            for(int i =0; i<shelf.pallets.size()-1; i+=1){
-                if(shelf.pallets[i].getItemCount()>shelf.pallets[i+1].getItemCount()){
-                    shelf.swapPallet(i, i+1);
+            for(int i =0; i<shelf.pallets.size()-1; ++i){
+                for (int j = 0;  j< shelf.pallets.size()-i-1; ++j){
+                    Pallet& pallet1 = shelf.pallets[j];
+                    Pallet& pallet2 = shelf.pallets[j+1];
+                    if(pallet1.getItemCount() > pallet2.getItemCount()){
+                        shelf.swapPallet(j, j+1);
+                    }
                 }
             }
-        }
-        return true;
+            employee.setBusy(true);
+            return true;
+        }        
     }
     return false;
 }
